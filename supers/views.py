@@ -41,3 +41,16 @@ def supers_detail(request, pk):
     elif request.method == 'DELETE':
         supers.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+@api_view(['GET'])
+def hero_villain_lists(request):
+    heros = Super.objects.filter(super_type_id=1)
+    villains = Super.objects.filter(super_type_id=2)
+    heros_serializer = SupersSerializer(heros, many=True)
+    villains_serilaizer = SupersSerializer(villains, many=True)
+
+    custom_response_dictionary = {
+        'heros': heros_serializer.data,
+        'villains': villains_serilaizer.data
+    }
+    return Response(custom_response_dictionary)
