@@ -13,14 +13,12 @@ from django.shortcuts import get_object_or_404
 def supers_list(requst):
     if requst.method == 'GET':
 
-        supertype_name = requst.query_params.get('Villain')
-        print(supertype_name)
-
-        queryset = Super.objects.all()
-        if supertype_name:
-            queryset = queryset.filter(super_type__name=supertype_name)
+        supertype_name = requst.query_params.get('super_type_id')
+        
         supers = Super.objects.all()
-        serializer = SupersSerializer(supers, many = True)
+        if supertype_name:
+            supers = supers.filter(super_type_id=supertype_name)
+        serializer = SupersSerializer(supers, many=True)
         return Response(serializer.data)
 
     elif requst.method == 'POST':
